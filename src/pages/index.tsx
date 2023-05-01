@@ -1,16 +1,16 @@
-import { Inter } from 'next/font/google'
-import { signIn, signOut, useSession } from 'next-auth/react'
-
-const inter = Inter({ subsets: ['latin'] })
+import { signIn, signOut, useSession } from 'next-auth/react';
+import Layout from '@/components/layout';
 
 export default function Home() {
     const { data: session } = useSession()
   if (session) {
     return (
-      <>
-        Signed in as {session.user.firstname} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
+      <Layout>
+        <>
+          Signed in as {session.user.firstname} <br />
+          <button onClick={() => signOut()}>Sign out</button>
+        </>
+      </Layout>
     )
   }
   return (
