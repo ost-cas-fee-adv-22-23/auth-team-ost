@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions, User } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { Issuer } from 'openid-client';
 
@@ -11,7 +11,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     });
 
     const { refresh_token, access_token, expires_at } = await client.refresh(token.refreshToken as string);
-    console.warn('try to refresh');
+
     return {
       ...token,
       accessToken: access_token,
@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
       wellKnown: process.env.ZITADEL_ISSUER,
       authorization: {
         params: {
-          scope: 'openid email profile',
+          scope: 'openid email profile offline_access', // scope offline_access ist notwendig um ein refreshToken zu erhalten
         },
       },
       idToken: true,
@@ -71,33 +71,35 @@ export const authOptions: NextAuthOptions = {
     },
   ],
   session: {
-    maxAge: 1 * 60, // 5 minutes // 12 * 60 * 60, // 12 hours
+    maxAge: 3 * 60 * 60, // 3 Stunden
   },
   callbacks: {
     async jwt({ token, user, account }) {
       // account, user und profile werden nur beim ersten callback Aufruf (nach signIn) mitgegeben:
       // https://next-auth.js.org/configuration/callbacks#jwt-callback
+
       if (account) {
         token.accessToken = account.access_token;
-        token.expiresAt = (account.expires_at as number) * 1000; // Gültigkeit Token bei ZITADEL: Defaultmässig 12 Stunden
+        token.refreshToken = account.refresh_token;
+        // Defaultmässig hat das Token bei ZITADEL eine Gültigkeit von 12 Stunden. Wir haben es zu Testzweck auf
+        // 0.1 Stunden = 6 Minuten gesetzt.
+        token.expiresAt = (account.expires_at ?? 0) * 1000;
       }
 
       if (user) {
         token.user = user;
       }
 
+      token.error = undefined;
+
       /* if (Date.now() > (token.expiresAt as number)) {
-        // todo: refresh token
-        // https://team-ost-s0uq0a.zitadel.cloud/oauth/v2/token
         delete token.accessToken;
       }*/
 
       // Return previous token if the access token has not expired yet
       if (Date.now() < (token.expiresAt as number)) {
-        console.warn(Date.now(), token.expiresAt);
         return token;
       }
-      console.warn('return refresh token');
       // Access token has expired, try to update it
       return refreshAccessToken(token);
     },

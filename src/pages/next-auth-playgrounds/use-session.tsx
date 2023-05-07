@@ -11,7 +11,7 @@ export default function UseSessionPage() {
           <div>Status: {status}</div>
           <div>Expires (Session und nicht Token): {data?.expires}</div>
           <div>
-            User: {data?.user.firstname} {data?.user.lastname}
+            User: {data?.user?.firstname} {data?.user?.lastname}
           </div>
         </div>
         <div>

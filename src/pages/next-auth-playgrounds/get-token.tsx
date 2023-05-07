@@ -1,9 +1,9 @@
 import Layout from '@/components/layout';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { getToken } from 'next-auth/jwt';
+import { getToken, JWT } from 'next-auth/jwt';
 
 type GetTokenPageProps = {
-  jwtPayload: boolean;
+  jwtPayload: JWT | null;
 };
 
 export default function GetTokenPage(props: GetTokenPageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
