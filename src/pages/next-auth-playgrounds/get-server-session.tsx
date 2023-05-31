@@ -28,6 +28,7 @@ export default function GetServerSessionPage(
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions);
+  console.warn('props', session);
 
   return {
     props: {

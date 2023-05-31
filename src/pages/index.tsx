@@ -18,11 +18,12 @@ export default function Home() {
         <ul className="list-disc px-10 mb-3">
           <li>Lebensdauer des AccessTokens wurde auf 0.1 Stunden (6 Minuten) gesetzt.</li>
           <li>
-            Das Token wird XX Minuten vor Ablauf erneuert (Sofern der JWT-Callback durchlaufen wird). Requests nach
-            /api/auth/signin, /api/auth/session und Aufrufe von getSession(), getServerSession() und useSession() erzwingen
-            ein Durchlaufen vom JWT-Callback.
+            Das AccessToken wird nach Ablauf erneuert (Sofern der JWT-Callback durchlaufen wird und ein gültiges RefreshToken
+            vorhanden ist). Requests nach /api/auth/signin, /api/auth/session und Aufrufe von getSession(),
+            getServerSession() und useSession() erzwingen ein Durchlaufen vom JWT-Callback.
           </li>
         </ul>
+        <p>Die Session von NextAuth hat eine Gültigkeit von 3 Stunden.</p>
       </div>
     </>
   );

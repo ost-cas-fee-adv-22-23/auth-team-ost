@@ -92,10 +92,6 @@ export const authOptions: NextAuthOptions = {
 
       token.error = undefined;
 
-      /* if (Date.now() > (token.expiresAt as number)) {
-        delete token.accessToken;
-      }*/
-
       // Return previous token if the access token has not expired yet
       if (Date.now() < (token.expiresAt as number)) {
         return token;
