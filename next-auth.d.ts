@@ -1,9 +1,9 @@
 import 'next-auth/jwt';
+import { User } from "next-auth";
 
 declare module 'next-auth' {
   interface Session {
-    accessToken?: string;
-    user: User;
+    user?: User
   }
 
   interface User {
@@ -17,7 +17,10 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    accessToken?: string;
     user?: User;
+    accessToken?: string;
+    refreshToken?: string;
+    expiresAt?: number;
+    error?: string;
   }
 }
