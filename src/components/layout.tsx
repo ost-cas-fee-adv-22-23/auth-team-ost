@@ -11,8 +11,8 @@ const Layout: FC<LayoutProps> = (props: LayoutProps) => {
   return (
     <div>
       <Head>
-        <title>Create Next Responsive Navbar With Tailwind CSS</title>
-        <meta name="description" content="Create Next JS Responsive Menu with Tailwind CSS" />
+        <title>next-auth Playground Team-Ost</title>
+        <meta name="description" content="next-auth Playground Team-Ost" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <nav className="w-full bg-gray-800 shadow">
